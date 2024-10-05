@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
+	"os"
 )
 
 // App struct
@@ -24,4 +26,10 @@ func (a *App) startup(ctx context.Context) {
 // Greet returns a greeting for the given name
 func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
+}
+
+func (a *App) WriteFile(sentence string) {
+	if err := os.WriteFile("file.txt", []byte(sentence), 0666); err != nil {
+		log.Fatal(err)
+	}
 }

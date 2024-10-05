@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from "react";
+import { WriteFile } from "../../wailsjs/go/main/App";
 
 export const ToDoList = () => {
   const [listTask, setListTask] = useState<string[] | []>([]);
@@ -13,6 +14,7 @@ export const ToDoList = () => {
       return;
     }
     setListTask([...listTask, task]);
+    WriteFile(task);
     setTask("");
   };
 
