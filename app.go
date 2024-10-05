@@ -29,7 +29,14 @@ func (a *App) Greet(name string) string {
 }
 
 func (a *App) WriteFile(sentence string) {
-	if err := os.WriteFile("file.txt", []byte(sentence), 0666); err != nil {
+
+	sentence = sentence + "\n"
+
+	f, err := os.OpenFile("file.csv", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if _, err := f.Write([]byte(sentence)); err != nil {
 		log.Fatal(err)
 	}
 }
