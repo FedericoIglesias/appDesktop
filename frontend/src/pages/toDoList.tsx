@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { WriteFile } from "../../wailsjs/go/main/App";
 
 export const ToDoList = () => {
@@ -18,11 +18,22 @@ export const ToDoList = () => {
     setTask("");
   };
 
+  const handlerKey = (e: KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handlerClick();
+    }
+  };
+
   return (
     <>
       <p>I 'am a to do list</p>
       <div>
-        <input type="text" onChange={(e) => handlerChange(e)} value={task} />
+        <input
+          type="text"
+          onChange={(e) => handlerChange(e)}
+          onKeyDown={(e) => handlerKey(e)}
+          value={task}
+        />
         <button onClick={handlerClick}>+</button>
       </div>
       {listTask.length == 0 ? (
