@@ -28,15 +28,13 @@ func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
 
-func (a *App) WriteFile(sentence string) {
-
-	sentence = sentence + "\n"
+func (a *App) WriteFile(task string) {
 
 	f, err := os.OpenFile("file.csv", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
-	if _, err := f.Write([]byte(sentence)); err != nil {
+	if _, err := f.Write([]byte(task)); err != nil {
 		log.Fatal(err)
 	}
 }
