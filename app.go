@@ -30,11 +30,6 @@ func (a *App) Greet(name string) string {
 }
 
 func (a *App) WriteFile(tasks []Task) {
-	// taskOut := Task{Task: "", Id: 0}
-	// var listTasks []Task
-
-	// listTasks = append(listTasks, taskOut, tasks[])
-
 
 	_, err := os.Create("task.csv")
 	if err != nil {
@@ -46,9 +41,10 @@ func (a *App) WriteFile(tasks []Task) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	println("Am here in the a back")
 
-	for _, v := range tasks {
+	for i := 0; i < len(tasks); i++ {
+		v := tasks[i]
 		file.Write([]byte(strconv.Itoa(v.Id) + "," + v.Task + "\n"))
 	}
+
 }

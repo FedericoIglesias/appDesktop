@@ -13,8 +13,10 @@ const DivTask = styled.section`
   }
 `;
 
+let listTask: main.Task[] = [];
+
 export const ToDoList = () => {
-  const [listTask, setListTask] = useState<main.Task[]>([]);
+  // const [listTask, setListTask] = useState<main.Task[]>([]);
   const [task, setTask] = useState<main.Task>({ Task: "", Id: 0 });
 
   const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -25,9 +27,8 @@ export const ToDoList = () => {
     if (task.Task === "") {
       return;
     }
-    setListTask([...listTask, task]);
-    WriteFile(listTask); //
-    console.log("I will save: " + task.Task);
+    listTask.push(task);
+    WriteFile(listTask);
     setTask({ Task: "", Id: 0 });
   };
 
@@ -38,7 +39,7 @@ export const ToDoList = () => {
   };
 
   const handlerDelete = (id: number) => {
-    setListTask(listTask.filter((Task: main.Task) => task.Id !== id));
+    // setListTask(listTask.filter((Task: main.Task) => task.Id !== id));
   };
 
   return (
