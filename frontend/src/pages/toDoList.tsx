@@ -1,4 +1,10 @@
-import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  SyntheticEvent,
+  useEffect,
+  useState,
+} from "react";
 import { BringTasks, SaveTasks } from "../../wailsjs/go/main/App";
 import DeleteIcon from "@mui/icons-material/Delete";
 import styled from "styled-components";
@@ -19,19 +25,38 @@ BringTasks().then((t: string) => {
   const listBring = t.split("\n");
   listBring.map((str: string) => {
     const arr = str.split(";");
-    // console.log({ Task: arr[1], Id: Number(arr[0]) });
     if (arr[0] !== "") {
-      listTask.push({ Task: arr[1], Id: Number(arr[0]) });
+      listTask.push({ Task: arr[1], Id: Number(arr[0]), Priorly: 0 });
     }
   });
 });
 
+const checkPriorly = (value: number) => {
+  switch (value) {
+    case 0:
+      return "Low";
+    case 1:
+      return "Normal";
+    case 2:
+      return "High";
+  }
+};
+
 export const ToDoList = () => {
   const [list, setList] = useState<main.Task[]>(listTask);
-  const [task, setTask] = useState<main.Task>({ Task: "", Id: 0 });
+  const [task, setTask] = useState<main.Task>({
+    Task: "",
+    Id: new Date().getTime(),
+    Priorly: 0,
+  });
 
-  const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTask({ Task: e.target.value, Id: new Date().getTime() });
+  const handlerChangeTask = (e: ChangeEvent<HTMLInputElement>) => {
+    setTask({ ...task, Task: e.target.value });
+  };
+
+  const handlerChangePriorly = (e: ChangeEvent<HTMLSelectElement>) => {
+    console.log(e.currentTarget);
+    setTask({ ...task, Priorly: Number(e.target.value) });
   };
 
   const handlerClick = () => {
@@ -41,7 +66,7 @@ export const ToDoList = () => {
     listTask.push(task);
     setList(listTask);
     SaveTasks(listTask);
-    setTask({ Task: "", Id: 0 });
+    setTask({ Task: "", Id: new Date().getTime(), Priorly: 0 });
   };
 
   const handlerKey = (e: KeyboardEvent) => {
@@ -66,10 +91,21 @@ export const ToDoList = () => {
       <div>
         <input
           type="text"
-          onChange={(e) => handlerChange(e)}
+          onChange={(e) => handlerChangeTask(e)}
           onKeyDown={(e) => handlerKey(e)}
           value={task.Task}
         />
+        <select
+          name=""
+          id=""
+          onChange={(e) => handlerChangePriorly(e)}
+          onKeyDown={(e) => handlerKey(e)}
+          value={task.Priorly}
+        >
+          <option value={0}>Low</option>
+          <option value={1}>Normal</option>
+          <option value={2}>High</option>
+        </select>
         <button onClick={handlerClick}>+</button>
       </div>
       <DivTask>
@@ -82,6 +118,7 @@ export const ToDoList = () => {
             return (
               <div key={task.Id}>
                 <p>{task.Task}</p>
+                <p>{checkPriorly(task.Priorly)}</p>
                 <article onClick={() => handlerDelete(task.Id)}>
                   <DeleteIcon />
                 </article>

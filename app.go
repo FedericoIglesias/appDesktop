@@ -44,7 +44,7 @@ func (a *App) SaveTasks(tasks []Task) {
 
 	for i := 0; i < len(tasks); i++ {
 		v := tasks[i]
-		file.Write([]byte(strconv.Itoa(v.Id) + ";" + v.Task + "\n"))
+		file.Write([]byte(strconv.Itoa(v.Id) + ";" + v.Task + ";" + strconv.Itoa(v.Priorly) + "\n"))
 	}
 
 }
