@@ -1,5 +1,5 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
-import { WriteFile } from "../../wailsjs/go/main/App";
+import { SaveTasks } from "../../wailsjs/go/main/App";
 import DeleteIcon from "@mui/icons-material/Delete";
 import styled from "styled-components";
 import { main } from "../../wailsjs/go/models";
@@ -29,7 +29,7 @@ export const ToDoList = () => {
     }
     listTask.push(task);
     setList(listTask);
-    WriteFile(listTask);
+    SaveTasks(listTask);
     setTask({ Task: "", Id: 0 });
   };
 
@@ -40,10 +40,9 @@ export const ToDoList = () => {
   };
 
   const handlerDelete = (id: number) => {
-    // setList(list.filter((Task: main.Task) => Task.Id !== id));
     listTask = list.filter((Task: main.Task) => Task.Id !== id);
     setList(listTask);
-    WriteFile(listTask);
+    SaveTasks(listTask);
   };
 
   return (

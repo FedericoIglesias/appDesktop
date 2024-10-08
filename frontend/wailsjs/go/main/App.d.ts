@@ -4,4 +4,4 @@ import {main} from '../models';
 
 export function Greet(arg1:string):Promise<string>;
 
-export function WriteFile(arg1:Array<main.Task>):Promise<void>;
+export function SaveTasks(arg1:Array<main.Task>):Promise<void>;

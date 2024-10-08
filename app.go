@@ -29,7 +29,7 @@ func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
 
-func (a *App) WriteFile(tasks []Task) {
+func (a *App) SaveTasks(tasks []Task) {
 
 	_, err := os.Create("task.csv")
 	if err != nil {
