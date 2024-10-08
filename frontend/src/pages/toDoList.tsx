@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import { WriteFile } from "../../wailsjs/go/main/App";
 import DeleteIcon from "@mui/icons-material/Delete";
 import styled from "styled-components";
@@ -16,7 +16,7 @@ const DivTask = styled.section`
 let listTask: main.Task[] = [];
 
 export const ToDoList = () => {
-  // const [listTask, setListTask] = useState<main.Task[]>([]);
+  const [list, setList] = useState<main.Task[]>(listTask);
   const [task, setTask] = useState<main.Task>({ Task: "", Id: 0 });
 
   const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -28,6 +28,7 @@ export const ToDoList = () => {
       return;
     }
     listTask.push(task);
+    setList(listTask);
     WriteFile(listTask);
     setTask({ Task: "", Id: 0 });
   };
@@ -39,7 +40,10 @@ export const ToDoList = () => {
   };
 
   const handlerDelete = (id: number) => {
-    // setListTask(listTask.filter((Task: main.Task) => task.Id !== id));
+    // setList(list.filter((Task: main.Task) => Task.Id !== id));
+    listTask = list.filter((Task: main.Task) => Task.Id !== id);
+    setList(listTask);
+    WriteFile(listTask);
   };
 
   return (
@@ -55,12 +59,12 @@ export const ToDoList = () => {
         <button onClick={handlerClick}>+</button>
       </div>
       <DivTask>
-        {listTask.length == 0 ? (
+        {list.length == 0 ? (
           <div>
             <p>No task in this moment</p>
           </div>
         ) : (
-          listTask.map((task: main.Task) => {
+          list.map((task: main.Task) => {
             return (
               <div key={task.Id}>
                 <p>{task.Task}</p>
