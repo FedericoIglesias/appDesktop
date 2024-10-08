@@ -48,3 +48,15 @@ func (a *App) SaveTasks(tasks []Task) {
 	}
 
 }
+
+func (a *App) BringTasks() string {
+
+	file, err := os.ReadFile("task.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+	task := []byte(file)
+	fmt.Sprintf("%s", task)
+	return fmt.Sprintf("%s", task)
+
+}

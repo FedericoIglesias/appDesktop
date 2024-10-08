@@ -1,5 +1,5 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
-import { SaveTasks } from "../../wailsjs/go/main/App";
+import { BringTasks, SaveTasks } from "../../wailsjs/go/main/App";
 import DeleteIcon from "@mui/icons-material/Delete";
 import styled from "styled-components";
 import { main } from "../../wailsjs/go/models";
@@ -14,6 +14,17 @@ const DivTask = styled.section`
 `;
 
 let listTask: main.Task[] = [];
+
+BringTasks().then((t: string) => {
+  const listBring = t.split("\n");
+  listBring.map((str: string) => {
+    const arr = str.split(";");
+    // console.log({ Task: arr[1], Id: Number(arr[0]) });
+    if (arr[0] !== "") {
+      listTask.push({ Task: arr[1], Id: Number(arr[0]) });
+    }
+  });
+});
 
 export const ToDoList = () => {
   const [list, setList] = useState<main.Task[]>(listTask);
@@ -44,6 +55,10 @@ export const ToDoList = () => {
     setList(listTask);
     SaveTasks(listTask);
   };
+
+  useEffect(() => {
+    setList(listTask);
+  }, []);
 
   return (
     <>
