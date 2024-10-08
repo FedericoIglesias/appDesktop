@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 )
 
 // App struct
@@ -28,13 +29,26 @@ func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
 
-func (a *App) WriteFile(task string) {
+func (a *App) WriteFile(tasks []Task) {
+	// taskOut := Task{Task: "", Id: 0}
+	// var listTasks []Task
 
-	f, err := os.OpenFile("file.csv", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+	// listTasks = append(listTasks, taskOut, tasks[])
+
+
+	_, err := os.Create("task.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
-	if _, err := f.Write([]byte(task)); err != nil {
+
+	file, err := os.OpenFile("task.csv", os.O_RDWR|os.O_APPEND, 0666)
+
+	if err != nil {
 		log.Fatal(err)
+	}
+	println("Am here in the a back")
+
+	for _, v := range tasks {
+		file.Write([]byte(strconv.Itoa(v.Id) + "," + v.Task + "\n"))
 	}
 }

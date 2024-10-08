@@ -1,7 +1,6 @@
-package model
+package main
 
 type Task struct {
-	Id   uint
+	Id   int
 	Task string
 }
-

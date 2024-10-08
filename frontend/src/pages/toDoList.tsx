@@ -2,6 +2,7 @@ import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { WriteFile } from "../../wailsjs/go/main/App";
 import DeleteIcon from "@mui/icons-material/Delete";
 import styled from "styled-components";
+import { main } from "../../wailsjs/go/models";
 
 const DivTask = styled.section`
   div {
@@ -13,20 +14,21 @@ const DivTask = styled.section`
 `;
 
 export const ToDoList = () => {
-  const [listTask, setListTask] = useState<Task[]>([]);
-  const [task, setTask] = useState<Task>({ task: "", id: 0 });
+  const [listTask, setListTask] = useState<main.Task[]>([]);
+  const [task, setTask] = useState<main.Task>({ Task: "", Id: 0 });
 
   const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTask({ task: e.target.value, id: new Date().getTime() });
+    setTask({ Task: e.target.value, Id: new Date().getTime() });
   };
 
   const handlerClick = () => {
-    if (task.task === "") {
+    if (task.Task === "") {
       return;
     }
     setListTask([...listTask, task]);
-    // WriteFile(task.task);
-    setTask({ task: "", id: 0 });
+    WriteFile(listTask); //
+    console.log("I will save: " + task.Task);
+    setTask({ Task: "", Id: 0 });
   };
 
   const handlerKey = (e: KeyboardEvent) => {
@@ -36,7 +38,7 @@ export const ToDoList = () => {
   };
 
   const handlerDelete = (id: number) => {
-    setListTask(listTask.filter((task: Task) => task.id !== id));
+    setListTask(listTask.filter((Task: main.Task) => task.Id !== id));
   };
 
   return (
@@ -47,7 +49,7 @@ export const ToDoList = () => {
           type="text"
           onChange={(e) => handlerChange(e)}
           onKeyDown={(e) => handlerKey(e)}
-          value={task.task}
+          value={task.Task}
         />
         <button onClick={handlerClick}>+</button>
       </div>
@@ -57,11 +59,11 @@ export const ToDoList = () => {
             <p>No task in this moment</p>
           </div>
         ) : (
-          listTask.map((task: Task) => {
+          listTask.map((task: main.Task) => {
             return (
-              <div key={task.id}>
-                <p>{task.task}</p>
-                <article onClick={() => handlerDelete(task.id)}>
+              <div key={task.Id}>
+                <p>{task.Task}</p>
+                <article onClick={() => handlerDelete(task.Id)}>
                   <DeleteIcon />
                 </article>
               </div>
