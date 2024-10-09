@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { BackButton } from "../components/backButton";
 
 export const MainPage = () => {
   return (
