@@ -3,6 +3,7 @@ import { BringTasks, SaveTasks } from "../../wailsjs/go/main/App";
 import DeleteIcon from "@mui/icons-material/Delete";
 import styled from "styled-components";
 import { main } from "../../wailsjs/go/models";
+import { BackButton } from "../components/backButton";
 
 const DivTask = styled.div`
   background-color: #ddd;
@@ -119,6 +120,7 @@ export const ToDoList = () => {
 
   return (
     <MainPage>
+      <BackButton />
       <h1>Task to do</h1>
       <form>
         <input
