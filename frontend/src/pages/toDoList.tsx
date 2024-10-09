@@ -1,21 +1,53 @@
-import {
-  ChangeEvent,
-  KeyboardEvent,
-  SyntheticEvent,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import { BringTasks, SaveTasks } from "../../wailsjs/go/main/App";
 import DeleteIcon from "@mui/icons-material/Delete";
 import styled from "styled-components";
 import { main } from "../../wailsjs/go/models";
 
-const DivTask = styled.section`
-  div {
-    background-color: #444;
+const DivTask = styled.div`
+  background-color: #ddd;
+  display: grid;
+  padding: 3px 0 3px 10px;
+  margin-bottom: 3px;
+  grid-template-areas: "task date priorly delete";
+  grid-template-columns: 50% 20% 20% 10%;
+  p:nth-child(3),
+  p:nth-child(2),
+  p:nth-child(4) {
+    text-align: center;
+  }
+`;
+
+const MainPage = styled.main`
+  h1 {
+    color: white;
+    text-align: center;
+  }
+  form {
     display: flex;
-    border: 1px solid black;
-    margin: 3px 0;
+    justify-content: space-evenly;
+    margin: 10px;
+    button {
+      padding: 5px 10px;
+      border: none;
+    }
+    button:hover {
+      background-color: orange;
+    }
+    input {
+      ::placeholder {
+        color: #222;
+      }
+      padding: 2px 4px;
+    }
+    select {
+      padding: 2px 4px;
+    }
+  }
+  section {
+    /* background-color: #aaa; */
+    max-width: 90vw;
+    margin: auto;
   }
 `;
 
@@ -86,10 +118,11 @@ export const ToDoList = () => {
   }, []);
 
   return (
-    <>
-      <p>I 'am a to do list</p>
-      <div>
+    <MainPage>
+      <h1>Task to do</h1>
+      <form>
         <input
+          placeholder="Write your task"
           type="text"
           onChange={(e) => handlerChangeTask(e)}
           onKeyDown={(e) => handlerKey(e)}
@@ -106,27 +139,36 @@ export const ToDoList = () => {
           <option value={1}>Normal</option>
           <option value={2}>High</option>
         </select>
-        <button onClick={handlerClick}>+</button>
-      </div>
-      <DivTask>
+        <button onClick={handlerClick}>Add task</button>
+      </form>
+      <section>
         {list.length == 0 ? (
-          <div>
+          <DivTask>
             <p>No task in this moment</p>
-          </div>
+          </DivTask>
         ) : (
-          list.map((task: main.Task) => {
-            return (
-              <div key={task.Id}>
-                <p>{task.Task}</p>
-                <p>{checkPriorly(task.Priorly)}</p>
-                <article onClick={() => handlerDelete(task.Id)}>
-                  <DeleteIcon />
-                </article>
-              </div>
-            );
-          })
+          <>
+            <DivTask>
+              <p>Task</p>
+              <p>Date</p>
+              <p>Priorly</p>
+              <p>Delete</p>
+            </DivTask>
+            {list.map((task: main.Task) => {
+              return (
+                <DivTask key={task.Id}>
+                  <p>{task.Task}</p>
+                  <p>{new Date(task.Id).toDateString()}</p>
+                  <p>{checkPriorly(task.Priorly)}</p>
+                  <p onClick={() => handlerDelete(task.Id)}>
+                    <DeleteIcon />
+                  </p>
+                </DivTask>
+              );
+            })}
+          </>
         )}
-      </DivTask>
-    </>
+      </section>
+    </MainPage>
   );
 };
